@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Manager</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <section class="card" id="auth-section">
+      <h1>Task Manager</h1>
+
+      <div class="tabs">
+        <button id="tab-register" class="active">Registrar</button>
+        <button id="tab-login">Entrar</button>
+      </div>
+
+      <form id="register-form" class="form active">
+        <label>Nome <input type="text" id="register-name" /></label>
+        <label>Email <input type="email" id="register-email" /></label>
+        <label>Senha <input type="password" id="register-password" /></label>
+        <button type="submit">Registrar</button>
+      </form>
+
+      <form id="login-form" class="form">
+        <label>Email <input type="email" id="login-email" /></label>
+        <label>Senha <input type="password" id="login-password" /></label>
+        <button type="submit">Entrar</button>
+      </form>
+
+      <div id="auth-message" class="message"></div>
+    </section>
+
+    <section class="card hidden" id="app-section">
+      <div class="top-bar">
+        <div>
+          <h2>Área protegida</h2>
+          <p>Token atual: <span id="token-display">-</span></p>
+        </div>
+        <button id="logout-button">Sair</button>
+      </div>
+
+      <div class="actions">
+        <button id="load-projects">Carregar projetos</button>
+        <button id="create-project-toggle">Novo projeto</button>
+      </div>
+
+      <form id="create-project-form" class="form hidden">
+        <label>Nome <input type="text" id="project-name" /></label>
+        <label>Descrição <input type="text" id="project-description" /></label>
+        <button type="submit">Criar projeto</button>
+      </form>
+
+      <div id="projects-list"></div>
+
+      <section id="project-details" class="hidden">
+        <div class="detail-header">
+          <h3 id="selected-project-name"></h3>
+          <button id="create-task-toggle">Nova tarefa</button>
+        </div>
+
+        <form id="create-task-form" class="form hidden">
+          <label>Título <input type="text" id="task-title" /></label>
+          <label>Descrição <input type="text" id="task-description" /></label>
+          <button type="submit">Criar tarefa</button>
+        </form>
+
+        <div id="tasks-list"></div>
+      </section>
+
+      <div id="app-message" class="message"></div>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

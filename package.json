@@ -21,7 +21,9 @@
   },
   "homepage": "https://github.com/Pandora-virus/task-manager-api#readme",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.9.2",
     "nodemon": "^3.1.14",
     "prisma": "^5.22.0",
@@ -30,8 +32,10 @@
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
     "zod": "^4.4.3"
   }
 }
