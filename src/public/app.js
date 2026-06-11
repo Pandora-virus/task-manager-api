@@ -447,9 +447,9 @@ async function addTask(event) {
   const title = document.getElementById('task-title').value;
   const description = document.getElementById('task-description').value;
   const editingId = editingTaskId.value;
+  const isEditMode = modal.dataset.mode === 'edit';
 
-  if (editingId) {
-    // Edit existing task
+  if (isEditMode && editingId) {
     const { status, body } = await request(
       `/projects/${state.selectedProject.id}/tasks/${editingId}`,
       { method: 'PUT', body: JSON.stringify({ title, description, status: state.selectedColumn }) }
@@ -462,6 +462,11 @@ async function addTask(event) {
     } else {
       setMessage(boardMessage, body.error || 'Erro ao atualizar tarefa.');
     }
+    return;
+  }
+
+  if (isEditMode && !editingId) {
+    setMessage(boardMessage, 'ID da tarefa não encontrado para edição.', true);
     return;
   }
 
