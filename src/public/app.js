@@ -14,6 +14,7 @@ const modalCancel = document.getElementById('modal-cancel');
 const modalTitle = document.getElementById('modal-title');
 const modalSubmit = document.getElementById('modal-submit');
 const editingTaskId = document.getElementById('editing-task-id');
+const editingTaskStatus = document.getElementById('editing-task-status');
 const backToProjects = document.getElementById('back-to-projects');
 const logoutButton = document.getElementById('logout-button');
 const createProjectToggle = document.getElementById('create-project-toggle');
@@ -427,12 +428,14 @@ function closeAddTaskModal() {
   modal.classList.add('hidden');
   addTaskForm.reset();
   editingTaskId.value = '';
+  editingTaskStatus.value = '';
 }
 
 function openEditTaskModal(task) {
   state.selectedColumn = task.status;
   modal.dataset.mode = 'edit';
   editingTaskId.value = task.id;
+  editingTaskStatus.value = task.status;
   modalTitle.textContent = 'Editar Tarefa';
   modalSubmit.textContent = 'Salvar';
   document.getElementById('task-title').value = task.title;
@@ -450,9 +453,10 @@ async function addTask(event) {
   const isEditMode = modal.dataset.mode === 'edit';
 
   if (isEditMode && editingId) {
+    const editStatus = editingTaskStatus.value || state.selectedColumn;
     const { status, body } = await request(
       `/projects/${state.selectedProject.id}/tasks/${editingId}`,
-      { method: 'PUT', body: JSON.stringify({ title, description, status: state.selectedColumn }) }
+      { method: 'PUT', body: JSON.stringify({ title, description, status: editStatus }) }
     );
 
     if (status === 200) {
