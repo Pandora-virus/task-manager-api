@@ -238,7 +238,8 @@ function createTaskCard(task) {
 
   editBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    const currentStatus = card.dataset.status || task.status;
+    const column = card.closest('.kanban-column');
+    const currentStatus = column?.dataset.status || task.status;
     openEditTaskModal(task, currentStatus);
   });
 
