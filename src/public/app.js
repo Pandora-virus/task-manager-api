@@ -238,7 +238,8 @@ function createTaskCard(task) {
 
   editBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    openEditTaskModal(task);
+    const currentStatus = card.dataset.status || task.status;
+    openEditTaskModal(task, currentStatus);
   });
 
   deleteBtn.addEventListener('click', async (e) => {
@@ -431,11 +432,12 @@ function closeAddTaskModal() {
   editingTaskStatus.value = '';
 }
 
-function openEditTaskModal(task) {
-  state.selectedColumn = task.status;
+function openEditTaskModal(task, status) {
+  const taskStatus = status || task.status;
+  state.selectedColumn = taskStatus;
   modal.dataset.mode = 'edit';
   editingTaskId.value = task.id;
-  editingTaskStatus.value = task.status;
+  editingTaskStatus.value = taskStatus;
   modalTitle.textContent = 'Editar Tarefa';
   modalSubmit.textContent = 'Salvar';
   document.getElementById('task-title').value = task.title;
