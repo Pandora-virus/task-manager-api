@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Task Manager</title>
+  <title>Task Manager - Kanban</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <main>
+    <!-- Auth Section -->
     <section class="card" id="auth-section">
       <h1>Task Manager</h1>
 
@@ -32,18 +33,16 @@
       <div id="auth-message" class="message"></div>
     </section>
 
-    <section class="card hidden" id="app-section">
-      <div class="top-bar">
-        <div>
-          <h2>Área protegida</h2>
-          <p>Token atual: <span id="token-display">-</span></p>
-        </div>
-        <button id="logout-button">Sair</button>
+    <!-- Projects Section -->
+    <section class="card hidden" id="projects-section">
+      <div class="section-header">
+        <h2>Meus Projetos</h2>
+        <button id="logout-button" class="secondary">Sair</button>
       </div>
 
       <div class="actions">
-        <button id="load-projects">Carregar projetos</button>
-        <button id="create-project-toggle">Novo projeto</button>
+        <button id="load-projects" type="button">Carregar projetos</button>
+        <button id="create-project-toggle" type="button">+ Novo projeto</button>
       </div>
 
       <form id="create-project-form" class="form hidden">
@@ -52,25 +51,70 @@
         <button type="submit">Criar projeto</button>
       </form>
 
-      <div id="projects-list"></div>
+      <div id="projects-grid"></div>
+      <div id="projects-message" class="message"></div>
+    </section>
 
-      <section id="project-details" class="hidden">
-        <div class="detail-header">
-          <h3 id="selected-project-name"></h3>
-          <button id="create-task-toggle">Nova tarefa</button>
+    <!-- Kanban Board Section -->
+    <section class="board-container hidden" id="board-section">
+      <div class="board-header">
+        <div>
+          <h2 id="board-project-name"></h2>
+          <p id="board-project-description"></p>
+        </div>
+        <button id="back-to-projects" class="secondary">← Voltar</button>
+      </div>
+
+      <div class="kanban-board">
+        <!-- Column: A Fazer -->
+        <div class="kanban-column" data-status="pending">
+          <div class="column-header">
+            <h3>A Fazer</h3>
+            <span class="task-count">0</span>
+          </div>
+          <button class="add-task-btn">+ Adicionar</button>
+          <div class="tasks-container" id="tasks-pending"></div>
         </div>
 
-        <form id="create-task-form" class="form hidden">
-          <label>Título <input type="text" id="task-title" /></label>
-          <label>Descrição <input type="text" id="task-description" /></label>
-          <button type="submit">Criar tarefa</button>
-        </form>
+        <!-- Column: Em Progresso -->
+        <div class="kanban-column" data-status="in_progress">
+          <div class="column-header">
+            <h3>Em Progresso</h3>
+            <span class="task-count">0</span>
+          </div>
+          <button class="add-task-btn">+ Adicionar</button>
+          <div class="tasks-container" id="tasks-in_progress"></div>
+        </div>
 
-        <div id="tasks-list"></div>
-      </section>
+        <!-- Column: Concluído -->
+        <div class="kanban-column" data-status="done">
+          <div class="column-header">
+            <h3>Concluído</h3>
+            <span class="task-count">0</span>
+          </div>
+          <button class="add-task-btn">+ Adicionar</button>
+          <div class="tasks-container" id="tasks-done"></div>
+        </div>
+      </div>
 
-      <div id="app-message" class="message"></div>
+      <div id="board-message" class="message"></div>
     </section>
+
+    <!-- Add / Edit Task Modal -->
+    <div id="add-task-modal" class="modal hidden" data-mode="create">
+      <div class="modal-content">
+        <h3 id="modal-title">Nova Tarefa</h3>
+        <form id="add-task-form">
+          <input type="hidden" id="editing-task-id" />
+          <label>Título <input type="text" id="task-title" required /></label>
+          <label>Descrição <input type="text" id="task-description" /></label>
+          <div class="modal-actions">
+            <button type="submit" id="modal-submit">Criar</button>
+            <button type="button" id="modal-cancel" class="secondary">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </main>
   <script src="app.js"></script>
 </body>

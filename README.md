@@ -1,8 +1,16 @@
-# Task Manager API
+# Task Manager API (Kanban)
 
-API Node.js em TypeScript com Prisma, PostgreSQL e autenticação JWT.
+Este repositório implementa uma API REST em Node.js + TypeScript com persistência via Prisma/PostgreSQL e uma interface Kanban interativa servida como arquivos estáticos.
 
-## Instalação
+Conteúdo principal
+- Backend em TypeScript (Express)
+- Prisma ORM para acesso ao PostgreSQL
+- Autenticação JWT (Bearer)
+- UI estática (HTML/CSS/JS) com board Kanban e drag & drop
+
+--
+
+## Rápido (Getting Started)
 
 1. Instale dependências:
 
@@ -10,54 +18,97 @@ API Node.js em TypeScript com Prisma, PostgreSQL e autenticação JWT.
 npm install
 ```
 
-2. Copie o arquivo de configuração de ambiente:
+2. Crie e configure o arquivo de ambiente a partir do exemplo:
 
 ```bash
 cp .env.example .env
+# Edite .env para ajustar DATABASE_URL, JWT_SECRET e PORT
 ```
 
-3. Configure o banco PostgreSQL localmente e atualize `DATABASE_URL` se necessário.
-
-## Banco de dados
-
-O projeto usa `docker-compose.yml` para PostgreSQL:
+3. Inicie o banco com Docker Compose (recomendado) e aplique migrações:
 
 ```bash
 docker compose up -d
+npx prisma migrate deploy
 ```
 
-Se o Docker não estiver integrado ao WSL, use Docker Desktop e habilite a integração WSL.
+4. Rode em modo desenvolvimento:
+
+```bash
+npm run dev
+```
+
+Abra `http://localhost:3000` no navegador.
+
+--
+
+## Variáveis de ambiente
+
+Defina ao menos as seguintes variáveis em `.env`:
+
+```env
+DATABASE_URL="postgresql://<user>:<pass>@<host>:5432/<db>"
+JWT_SECRET="uma-chave-secreta-robusta"
+PORT=3000
+```
+
+--
 
 ## Scripts úteis
 
-- `npm run dev` — executa o servidor em modo desenvolvimento.
-- `npm run build` — compila TypeScript para `dist`.
-- `npm run start` — executa o build compilado.
+- `npm run dev` — executa a aplicação em modo desenvolvimento (ts-node / nodemon)
+- `npm run build` — compila TypeScript para `dist`
+- `npm run start` — inicia o build compilado em `dist`
 
-## Interface gráfica
+--
 
-A interface web estática é servida em `/` e permite:
+## Funcionalidades principais (UI)
 
-- Registrar novo usuário em `POST /auth/register`
-- Login em `POST /auth/login`
-- Consumir rotas protegidas de projetos usando o token JWT
+- Registro / Login de usuários (JWT)
+- CRUD de projetos
+- Board Kanban com três colunas: `pending` (A Fazer), `in_progress` (Em Progresso), `done` (Concluído)
+- Drag & Drop para mover tarefas entre colunas (atualiza status via API)
+- Criação e edição de tarefas dentro de um projeto
 
-### Navegação
+--
 
-Abra no navegador:
+## Rotas principais (resumo)
 
-```bash
-http://localhost:3000/
-```
+- `POST /auth/register` — registrar usuário
+- `POST /auth/login` — obter token JWT
+- `GET /projects` — listar projetos (autenticado)
+- `POST /projects` — criar projeto (autenticado)
+- `GET /projects/:projectId/tasks` — listar tarefas do projeto
+- `POST /projects/:projectId/tasks` — criar tarefa
+- `PUT /projects/:projectId/tasks/:id` — atualizar tarefa (ex.: mudar status)
 
-## Rotas principais
+Consulte o código em `src/controllers` e `src/routes` para detalhes de implementação e validação.
 
-- `GET /health`
-- `POST /auth/register`
-- `POST /auth/login`
-- `GET /projects` — protegido
-- `POST /projects` — protegido
+--
 
-## Observação
+## Deploy local (passos profissionais)
 
-O backend e a interface estão prontos. Se o banco não estiver rodando, os endpoints de autenticação e projetos retornarão erro de conexão.
+1. Ajuste `.env` com `DATABASE_URL` apontando para o serviço Postgres (Docker ou host).
+2. Levante o banco com `docker compose up -d`.
+3. Gere/execute migrações: `npx prisma migrate deploy`.
+4. Execute a aplicação: `npm run start` ou `npm run dev` durante desenvolvimento.
+
+Para ambientes de produção, recomenda-se usar um processo gerenciador (systemd, PM2) e configurar HTTPS/proxy reverso (nginx).
+
+--
+
+## Contribuição
+
+1. Crie uma branch com sua feature: `git checkout -b feat/minha-feature`
+2. Faça commits claros e pequenos
+3. Abra um Pull Request descrevendo a motivação e os testes realizados
+
+--
+
+## Contato
+
+Se precisar de ajuda para rodar ou deployar este projeto, envie detalhes do seu ambiente (OS, Docker instalado, versão do Node) que eu posso gerar comandos específicos ou auxiliar no deploy remoto.
+
+--
+
+_README atualizado automaticamente para clareza e uso profissional._
